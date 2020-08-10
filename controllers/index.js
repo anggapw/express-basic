@@ -70,7 +70,7 @@ module.exports = {
                 let newSiswa = {
                     id: siswa.length + 1,
                     name: req.body.name,
-                    age: req.body.age
+                    age: parseInt(req.body.age)
                 }
                 // jika form sudah diisi maka push object baru kedalam array siswa
                 siswa.push(newSiswa)
