@@ -10,7 +10,7 @@ module.exports = {
     getAll: (req, res) => {
         try {
             // jika data tersedia
-            if(siswa.length > 0) {
+            if (siswa.length > 0) {
                 res.send({
                     message: "Get all Data",
                     status: 200,
@@ -26,46 +26,46 @@ module.exports = {
             }
         }
         // jika try tidak bisa, berarti kesalah dari server
-        catch(error) {
+        catch (error) {
             res.send({
                 message: "Internal Server Error",
                 status: 500,
             })
         }
     },
-    getOne : (req, res) => {
+    getOne: (req, res) => {
         try {
-           // buat variabel untuk menarik / menangkap ID menggunakan method filter
-           // req.params adalah input yang digunakan di bagian url
-           const data = siswa.filter(user => user.id == req.params.id)
+            // buat variabel untuk menarik / menangkap ID menggunakan method filter
+            // req.params adalah input yang digunakan di bagian url
+            const data = siswa.filter(user => user.id == req.params.id)
             // jika siswa dengan ID yg sama dengan parameter ditemukan
-           if(data.length > 0) {
-               res.send({
-                   message: "Get One Siswa",
-                   status: 200,
-                   data: data
-               })
-           } else {
-               // jika ID tidak ditemukan
-               res.send({
-                   message: `Data dengan ID : ${req.params.id} tidak ditemukan`,
-                   status: 404
-               })
-           }
+            if (data.length > 0) {
+                res.send({
+                    message: "Get One Siswa",
+                    status: 200,
+                    data: data
+                })
+            } else {
+                // jika ID tidak ditemukan
+                res.send({
+                    message: `Data dengan ID : ${req.params.id} tidak ditemukan`,
+                    status: 404
+                })
+            }
         }
-        catch(error) {
+        catch (error) {
             res.send({
                 message: `Internal Server Error`,
                 status: 500
             })
         }
     },
-    register : (req, res) => {
+    register: (req, res) => {
         try {
             // kita akan cek si siswa yg daftar, namanya sudah ada apa belum
             let registeredUser = siswa.filter(user => user.name == req.body.name)
             // jika belum terdaftar/ method filter kita mereturn 0 / []
-            if(registeredUser.length == 0) {
+            if (registeredUser.length == 0) {
                 // kita buat 1 objek baru dari hasil input form
                 let newSiswa = {
                     id: siswa.length + 1,
@@ -86,20 +86,20 @@ module.exports = {
                 })
             }
         }
-        catch(error) {
+        catch (error) {
             res.send({
                 message: "Internal Server Error, Please try again",
                 status: 500
             })
         }
     },
-    edit : (req, res) => {
+    edit: (req, res) => {
         try {
             // menangkap ID yang ingin di edit, menggunakan method findIndex
             // misal findIndex berhasil, dia akan mereturn index, jika gagal dia mereturn -1
             let updateById = siswa.findIndex(user => user.id == req.params.id)
             siswa.map(data => {
-                if(data.id == req.params.id){
+                if (data.id == req.params.id) {
                     siswa[updateById].name = req.body.name;
                     siswa[updateById].age = req.body.age;
                 }
@@ -110,13 +110,28 @@ module.exports = {
             })
 
         }
-        catch(error){
+        catch (error) {
             res.send({
                 message: `Internal Server Error, please try again`,
                 status: 500
             })
         }
+    },
+    remove: (req, res) => {
+        try {
+            let updateById = siswa.findIndex(user => user.id == req.params.id)
+            siswa.splice(updateById, 1)
+            res.send({
+                message: `Siswa dengan ID ${req.params.id} berhasil dihapus`,
+                status: 201
+            })
+        }
+        catch (error) {
+            res.send({
+                message: `Internal Server Error, please try again`,
+                status: 500
+            })
+        }
+
     }
-
-
 }
